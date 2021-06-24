@@ -9,7 +9,7 @@ jobs:
     # Map a step output to a job output
     outputs:
       all: ${{ steps.changes.outputs.all}}
-      jsandjsx: ${{ steps.changes.outputs.jsandjsx }}
+      js: ${{ steps.changes.outputs.js }}
     steps:
         # Make sure we have some code to diff.
       - name: Checkout repository
@@ -19,7 +19,7 @@ jobs:
         # Set outputs using the command.
         run: |
           echo "::set-output name=all::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
-          echo "::set-output name=jsandjsx::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .js$ | xargs)"
+          echo "::set-output name=js::$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .js$ | xargs)"
   build:
     runs-on: ubuntu-latest
     # require the first job to have ran
@@ -31,10 +31,10 @@ jobs:
       - name: Install modules
         run: yarn
       - name: echo changed files
-        run: echo ${{needs.changedfiles.outputs.jsandjsx}}
+        run: echo ${{needs.changedfiles.outputs.js}}
       - name: List all modified files
         run: |
-          for file in "${{ needs.changedfiles.outputs.jsandjsx }}"; do
+          for file in "${{ needs.changedfiles.outputs.js }}"; do
             echo "$file was modified"
             yarn run eslint $file  --ext .js,.jsx
           done
