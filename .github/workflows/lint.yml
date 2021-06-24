@@ -17,7 +17,7 @@ jobs:
         uses: tj-actions/changed-files@v8.1
       - name: Install modules
         run: yarn
-      - name: List all modified files
+      - name: Run eslint on modified files
         run: |
           for file in "${{ steps.changed-files.outputs.all_modified_files }}"; do
             echo "$file was modified"
