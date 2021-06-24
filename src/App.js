@@ -6,7 +6,7 @@ class App extends React.Component {
     const { name } = this.props;
     return (
       <>
-        <h1>Hello {name}</h1>
+        <h1>Hi {name}</h1>
       </>
     );
   }
